@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quick Rishta Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .hidden-section {
+      display: none;
+    }
+    .visible-section {
+      display: block;
+    }
+    img.choice-img {
+      max-width: 100%;
+      max-height: 150px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+      }
+    img.choice-img.selected {
+      border-color: #dddedd; /* red ring when selected */
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-pink-50 to-rose-100 min-h-screen flex items-center justify-center px-4 py-12">
+  <main class="bg-white max-w-xl w-full rounded-lg shadow-lg p-8 flex flex-col">
+    <header class="mb-8 text-center">
+      <div class="mx-auto mb-4 w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-tr from-red-600 to-pink-500 text-white text-4xl font-bold select-none">
+        <svg aria-hidden="true" class="w-10 h-10" fill="currentColor" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 16a12 12 0 1 1 24 0c0 11-12 21-12 21S20 27 20 16z" />
+        </svg>
+      </div>
+      <h1 class="text-3xl font-extrabold text-red-600">Quick Rishta</h1>
+    </header>
+
+    <form id="quickRishtaForm" class="space-y-8" novalidate>
+      <!-- Section 1: Basic Info -->
+      <section id="section1" class="visible-section">
+        <div class="mb-6">
+          <label for="name" class="block text-gray-700 font-semibold mb-2">Name <span class="text-red-600">*</span></label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            required 
+            placeholder="Enter your full name"
+            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+          />
+          <p class="text-sm text-red-600 mt-1 hidden" id="nameError">Please enter your name.</p>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-2">Gender <span class="text-red-600">*</span></label>
+          <div class="flex gap-6">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="gender" value="Male" required />
+              <span>Male</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="gender" value="Female" />
+              <span>Female</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="gender" value="Other" />
+              <span>Other</span>
+            </label>
+          </div>
+          <p class="text-sm text-red-600 mt-1 hidden" id="genderError">Please select your gender.</p>
+        </div>
+
+        <div class="mb-6">
+          <label for="religion" class="block text-gray-700 font-semibold mb-2">Religion <span class="text-red-600">*</span></label>
+          <select 
+            id="religion" 
+            name="religion" 
+            required 
+            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+          >
+            <option value="" disabled selected>Select your religion</option>
+            <option>Islam</option>
+            <option>Hinduism</option>
+            <option>Christianity</option>
+            <option>Sikhism</option>
+            <option>Buddhism</option>
+            <option>Judaism</option>
+            <option>Other</option>
+          </select>
+          <p class="text-sm text-red-600 mt-1 hidden" id="religionError">Please select your religion.</p>
+        </div>
+
+        <div class="mb-6">
+          <label for="state" class="block text-gray-700 font-semibold mb-2">State <span class="text-red-600">*</span></label>
+          <select 
+            id="state" 
+            name="state" 
+            required 
+            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+          >
+            <option value="" disabled selected>Select your state</option>
+            <option>maharashtra</option>
+            <option>west bengal</option>
+            <option>bihar</option>
+            <option>jharkhand</option>
+            <option>uttar pradesh</option>
+            <option>Other</option>
+          </select>
+          <p class="text-sm text-red-600 mt-1 hidden" id="stateError">Please select your state.</p>
+        </div>
+
+        <div class="mb-6">
+          <label for="mobile" class="block text-gray-700 font-semibold mb-2">Mobile Number <span class="text-red-600">*</span></label>
+          <input 
+            type="tel" 
+            id="mobile" 
+            name="mobile" 
+            pattern="^[0-9]{10,15}$"
+            placeholder="Enter your mobile number (digits only)" 
+            required
+            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+          />
+          <p class="text-sm text-red-600 mt-1 hidden" id="mobileError">Please enter a valid mobile number with 10-15 digits.</p>
+        </div>
+      </section>
+
+      <!-- Section 2: Girls photos multiple choice -->
+      <section id="section2" class="hidden-section">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Select the Girl(s) You Like <span class="text-red-600">*</span></h2>
+        <p class="mb-6 text-gray-600">Choose one or more options below (click photos to select):</p>
+
+        <div class="grid grid-cols-2 gap-6">
+          <label class="flex flex-col items-center cursor-pointer select-none">
+            <div class="relative">
+              <img src="../arpita.png" alt="Arpita" 
+                class="choice-img" 
+                tabindex="0"
+              />
+              <svg class="checkmark absolute bottom-2 right-2 w-6 h-6 text-green-500 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <input type="checkbox" name="girls_photos" value="Arpita" class="hidden" />
+            <span class="mt-2 text-center">Arpita</span>
+          </label>
+          <label class="flex flex-col items-center cursor-pointer select-none">
+            <div class="relative">
+              <img src="../ISHITA.png" alt="Ishita" 
+                class="choice-img" 
+                tabindex="0"
+              />
+              <svg class="checkmark absolute bottom-2 right-2 w-6 h-6 text-green-500 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <input type="checkbox" name="girls_photos" value="Ishita" class="hidden" />
+            <span class="mt-2 text-center">Ishita</span>
+          </label>
+          <label class="flex flex-col items-center cursor-pointer select-none">
+            <div class="relative">
+              <img src="../NIDHI.png" alt="Nidhi" 
+                class="choice-img" 
+                tabindex="0"
+              />
+              <svg class="checkmark absolute bottom-2 right-2 w-6 h-6 text-green-500 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <input type="checkbox" name="girls_photos" value="Nidhi" class="hidden" />
+            <span class="mt-2 text-center">Nidhi</span>
+          </label>
+          <label class="flex flex-col items-center cursor-pointer select-none">
+            <div class="relative">
+              <img src="../sneha.png" alt="Sneha" 
+                class="choice-img" 
+                tabindex="0"
+              />
+              <svg class="checkmark absolute bottom-2 right-2 w-6 h-6 text-green-500 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <input type="checkbox" name="girls_photos" value="Sneha" class="hidden" />
+            <span class="mt-2 text-center">Sneha</span>
+          </label>
+        </div>
+
+        <p class="text-sm text-red-600 mt-3 hidden" id="girlsPhotosError">Please select at least one girl photo.</p>
+      </section>
+
+      <!-- Section 3: Email Input -->
+      <section id="section3" class="hidden-section">
+        <div class="mb-6">
+          <label for="email" class="block text-gray-700 font-semibold mb-2">Email ID <span class="text-red-600">*</span></label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            required 
+            placeholder="Enter your email address"
+            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+          />
+          <p class="text-sm text-red-600 mt-1 hidden" id="emailError">Please enter a valid email address.</p>
+        </div>
+      </section>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between">
+        <button type="button" id="prevBtn" class="px-6 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50" disabled>
+          Previous
+        </button>
+        <button type="button" id="nextBtn" class="px-6 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 focus:ring-4 focus:ring-red-400">
+          Next
+        </button>
+        <button type="submit" id="submitBtn" class="px-6 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 focus:ring-4 focus:ring-red-400 hidden">
+          Submit
+        </button>
+      </div>
+
+      <p id="submitMessage" class="mt-4 text-center font-semibold text-green-600 hidden">Thank you! Your form has been submitted. Call the girl at +91 9798683104</p>
+    </form>
+  </main>
+
+  <script>
+    (function(){
+      const form = document.getElementById('quickRishtaForm');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const submitBtn = document.getElementById('submitBtn');
+      const submitMessage = document.getElementById('submitMessage');
+
+      const sections = [
+        document.getElementById('section1'),
+        document.getElementById('section2'),
+        document.getElementById('section3')
+      ];
+      let currentIndex = 0;
+
+      // Image checkbox toggle styling
+      const choiceLabels = document.querySelectorAll('label.cursor-pointer');
+      choiceLabels.forEach(label => {
+        label.addEventListener('click', () => {
+          const checkbox = label.querySelector('input[type="checkbox"]');
+          const img = label.querySelector('img.choice-img');
+          const checkmark = label.querySelector('.checkmark');
+          
+          checkbox.checked = !checkbox.checked;
+          if (img) {
+            img.classList.toggle('selected', checkbox.checked);
+          }
+          if (checkmark) {
+            checkmark.classList.toggle('hidden', !checkbox.checked);
+          }
+        });
+      });
+      
+      // Also handle keyboard events on images
+      const choiceImages = document.querySelectorAll('img.choice-img');
+      choiceImages.forEach(img => {
+        img.addEventListener('keydown', (e) => {
+          if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const label = img.closest('label');
+            label.click();
+          }
+        });
+      });
+
+      function showSection(index) {
+        sections.forEach((section, i) => {
+          section.classList.toggle('visible-section', i === index);
+          section.classList.toggle('hidden-section', i !== index);
+        });
+
+        prevBtn.disabled = index === 0;
+        nextBtn.classList.toggle('hidden', index === sections.length - 1);
+        submitBtn.classList.toggle('hidden', index !== sections.length - 1);
+        submitMessage.classList.add('hidden');
+      }
+
+      function validateSection(index) {
+        let valid = true;
+
+        // Clear previous errors
+        function hideErrors(){
+          ['nameError', 'genderError', 'religionError', 'stateError', 'mobileError', 'girlsPhotosError', 'emailError'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.classList.add('hidden');
+          });
+        }
+        hideErrors();
+
+        if(index === 0) {
+          // Validate name
+          const nameInput = form.name;
+          if(!nameInput.value.trim()) {
+            document.getElementById('nameError').classList.remove('hidden');
+            valid = false;
+          }
+
+          // Validate gender
+          const genderInputs = form.gender;
+          let genderSelected = false;
+          for (const g of genderInputs) {
+            if(g.checked) genderSelected = true;
+          }
+          if(!genderSelected){
+            document.getElementById('genderError').classList.remove('hidden');
+            valid = false;
+          }
+
+          // Validate religion
+          if(!form.religion.value) {
+            document.getElementById('religionError').classList.remove('hidden');
+            valid = false;
+          }
+
+          // Validate state
+          if(!form.state.value) {
+            document.getElementById('stateError').classList.remove('hidden');
+            valid = false;
+          }
+
+          // Validate mobile number pattern and presence
+          const mobile = form.mobile.value.trim();
+          if(!mobile.match(/^\d{10,15}$/)) {
+            document.getElementById('mobileError').classList.remove('hidden');
+            valid = false;
+          }
+        }
+
+        if(index === 1) {
+          const chosen = form.querySelectorAll('input[name="girls_photos"]:checked');
+          if(chosen.length === 0){
+            document.getElementById('girlsPhotosError').classList.remove('hidden');
+            valid = false;
+          }
+        }
+
+        if(index === 2) {
+          const email = form.email.value.trim();
+          // Simple email validation regex
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if(!email || !emailPattern.test(email)) {
+            document.getElementById('emailError').classList.remove('hidden');
+            valid = false;
+          }
+        }
+
+        return valid;
+      }
+
+      nextBtn.addEventListener('click', () => {
+        if(validateSection(currentIndex)) {
+          if(currentIndex < sections.length - 1) {
+            currentIndex++;
+            showSection(currentIndex);
+          }
+        }
+      });
+
+      prevBtn.addEventListener('click', () => {
+        if(currentIndex > 0){
+          currentIndex--;
+          showSection(currentIndex);
+        }
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if(validateSection(currentIndex)){
+          // Here you would normally submit the data to a server or Google Forms via API
+          submitMessage.classList.remove('hidden');
+          nextBtn.disabled = true;
+          prevBtn.disabled = true;
+          submitBtn.disabled = true;
+          
+          // Optionally clear or reset after submit
+          // form.reset();
+        }
+      });
+
+      showSection(currentIndex);
+    })();
+  </script>
+</body>
+</html>
